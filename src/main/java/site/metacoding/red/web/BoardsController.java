@@ -16,6 +16,7 @@ import site.metacoding.red.domain.boards.Boards;
 import site.metacoding.red.domain.boards.BoardsDao;
 import site.metacoding.red.domain.boards.mapper.MainView;
 import site.metacoding.red.domain.users.Users;
+import site.metacoding.red.web.dto.request.boards.DetailDto;
 import site.metacoding.red.web.dto.request.boards.WriteDto;
 
 @RequiredArgsConstructor
@@ -54,7 +55,9 @@ public class BoardsController {
 	}
 	
 	@GetMapping("/boards/{id}")
-	public String getBoardList(@PathVariable Integer id) {
+	public String getBoardList(@PathVariable Integer id,Model model) {
+		DetailDto detail =boardsDao.findById(id);
+		model.addAttribute("detail",detail);
 		return "boards/detail";
 	}
 	
