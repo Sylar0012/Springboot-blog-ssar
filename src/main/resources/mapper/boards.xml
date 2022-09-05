@@ -3,25 +3,30 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.metacoding.red.domain.boards.BoardsDao">
-	
+
 	<insert id="insert">
-		
+		INSERT INTO
+		boards(id,title,content,usersId,createdAt)
+		VALUES
+		(boards_seq.nextval,#{title},#{content},#{usersId},sysdate)
 	</insert>
 
-	<select id="findById" resultType="site.metacoding.red.domain.boards.Boards">
-	
+	<select id="findById"
+		resultType="site.metacoding.red.domain.boards.Boards">
+
 	</select>
-	
-	<select id="findAll" resultType="site.metacoding.red.domain.boards.Boards">
-		
+
+	<select id="findAll"
+		resultType="site.metacoding.red.domain.boards.Boards">
+
 	</select>
-	
+
 	<update id="update">
-	
+
 	</update>
-	
+
 	<delete id="delete">
-	
+
 	</delete>
 
 </mapper>
