@@ -17,7 +17,7 @@
 	</select>
 
 	<select id="findAll"
-		resultType="site.metacoding.red.domain.boards.mapper.MainView">
+		resultType="site.metacoding.red.web.dto.response.boards.MainDto">
 		SELECT b.id, b.title, u.username FROM boards b
 		INNER JOIN users u 
 		ON b.usersid = u.id
