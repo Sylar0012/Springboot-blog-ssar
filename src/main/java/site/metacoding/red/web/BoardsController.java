@@ -19,6 +19,7 @@ import site.metacoding.red.domain.users.Users;
 import site.metacoding.red.web.dto.request.boards.DetailDto;
 import site.metacoding.red.web.dto.request.boards.WriteDto;
 import site.metacoding.red.web.dto.response.boards.MainDto;
+import site.metacoding.red.web.dto.response.boards.PagingDto;
 
 @RequiredArgsConstructor
 @Controller
@@ -48,10 +49,34 @@ public class BoardsController {
 		return"redirect:/";
 	}
 	
+	// http://localhost:8000/?page = 1
 	@GetMapping({"/", "/boards"})
-	public String getBoardList(Model model) {
-		List<MainDto> boardsList = boardsDao.findAll();
+	public String getBoardList(Model model, Integer page) {
+		if(page == null) page = 0;
+		
+		int startNum= page * 3;
+		
+		List<MainDto> boardsList = boardsDao.findAll(startNum);
+		//paging.set머시기로 dto완성
+		PagingDto paging = boardsDao.paging(page);
+		
+		final int blockCount =5;
+		
+		int currentBlock = page/5;
+		int startPageNum = 1+(blockCount*currentBlock);
+		int lastPageNum = startPageNum+blockCount-1;
+		
+		if(paging.getTotalCount() < lastPageNum) {
+			lastPageNum = paging.getTotalPage();
+		}
+		
+		paging.setBlockCount(blockCount);
+		paging.setCurrentBlock(currentBlock);
+		paging.setStartPageNum(startPageNum);
+		paging.setLastPageNum(lastPageNum);
+		
 		model.addAttribute("boardsList", boardsList);
+		model.addAttribute("paging",paging);
 		return "boards/main";
 	}
 	

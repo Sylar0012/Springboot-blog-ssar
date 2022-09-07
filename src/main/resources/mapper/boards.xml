@@ -18,10 +18,9 @@
 
 	<select id="findAll"
 		resultType="site.metacoding.red.web.dto.response.boards.MainDto">
-		SELECT b.id, b.title, u.username FROM boards b
-		INNER JOIN users u 
-		ON b.usersid = u.id
-		ORDER BY b.id DESC
+		SELECT * FROM boards ORDER BY id DESC
+		OFFSET #{startNum}
+		ROWS FETCH NEXT 3 ROWS ONLY
 	</select>
 
 	<update id="update">
@@ -31,5 +30,20 @@
 	<delete id="delete">
 
 	</delete>
+
+	<select id="paging" resultType="site.metacoding.red.web.dto.response.boards.PagingDto">
+		SELECT totalCount,
+		totalPage,
+		currentPage,
+		decode(currentPage, 0, 1, 0) first,
+		decode(currentPage, totalPage-1, 1, 0) last
+		FROM
+		(
+		select count(*) totalCount, ceil(count(*)/3) totalPage, #{page} currentPage, 0
+		first, 0 last
+		FROM boards
+		)
+
+	</select>
 
 </mapper>
