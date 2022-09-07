@@ -36,25 +36,21 @@ public class BoardsController {
 		Users principal = (Users) session.getAttribute("principal");
 		Boards boardsPs = boardsDao.findById(id);
 		if(boardsPs == null) { // if는 비정상 로직을 타게 해서 걸러내는 필터 역할을 하는게 좋다.
-			System.out.println("boardsPs 없다");
 			return"redirect:/boards/"+id;
 		}
 		
 		// 로그인 확인
 		if(principal==null) {
-			System.out.println("로그인 해라");
 			return"redirect:/loginForm";
 		}
 		
 		//권한체크 (principal.getId() usersId 비교.
 		if(principal.getId() != boardsPs.getUsersId()) {
-			System.out.println("UsersId랑 id랑 다르다");
 			return"redirect:/boards/"+id;
 		}
 		
 		
 		boardsDao.delete(id);
-		System.out.println("지워졌다.");
 		return "redirect:/";
 		
 	}

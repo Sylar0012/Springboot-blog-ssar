@@ -4,8 +4,8 @@
 
 <div class="container">
 	<br /> <br />
-	<H1 style="background-color: gray;">${principal.id }</H1>
-	<H1>${boards.usersId}</H1>
+	<h1>id : ${principal.id}</h1>
+	<h1>usersId : ${boards.usersId}</h1>
 	<c:if test="${principal.id == boards.usersId }">
 		<div class="d-flex">
 			<form>
