@@ -20,4 +20,15 @@ public class PagingDto {
 	// ?page=0 기준 blockPage = 1, startPageNum = 1, lastPageNum = 5, blockPageCount = 1, 2, 3, 4, 5 (5개)
 	// ?page=5 기준 blockPage = 2, startPageNum = 6, lastPageNum = 10, blockPageCount = 6, 7, 8, 9, 10 (5개)
 
+	public void makeBlockInfo() {
+		this.blockCount =5;
+		
+		this.currentBlock = currentPage/ blockCount;
+		this.startPageNum = 1+(blockCount*currentBlock);
+		this.lastPageNum = startPageNum+blockCount-1;
+		
+		if(totalPage < lastPageNum) {
+			this.lastPageNum = totalPage;
+		}
+	}
 }

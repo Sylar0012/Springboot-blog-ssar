@@ -27,9 +27,37 @@ public class BoardsController {
 
 	private final HttpSession session;
 	private final BoardsDao boardsDao;
-	// @PostMapping("/boards/{id}/delete")
+	// 
 	// @PostMapping("/boards/{id}/update")
 	
+	
+	@PostMapping("/boards/{id}/delete")
+	public String deleteBoards(@PathVariable Integer id){
+		Users principal = (Users) session.getAttribute("principal");
+		Boards boardsPs = boardsDao.findById(id);
+		if(boardsPs == null) { // if는 비정상 로직을 타게 해서 걸러내는 필터 역할을 하는게 좋다.
+			System.out.println("boardsPs 없다");
+			return"redirect:/boards/"+id;
+		}
+		
+		// 로그인 확인
+		if(principal==null) {
+			System.out.println("로그인 해라");
+			return"redirect:/loginForm";
+		}
+		
+		//권한체크 (principal.getId() usersId 비교.
+		if(principal.getId() != boardsPs.getUsersId()) {
+			System.out.println("UsersId랑 id랑 다르다");
+			return"redirect:/boards/"+id;
+		}
+		
+		
+		boardsDao.delete(id);
+		System.out.println("지워졌다.");
+		return "redirect:/";
+		
+	}
 
 	@PostMapping("/boards")
 	public String writeBoard(WriteDto writeDto) {
@@ -60,20 +88,7 @@ public class BoardsController {
 		//paging.set머시기로 dto완성
 		PagingDto paging = boardsDao.paging(page);
 		
-		final int blockCount =5;
-		
-		int currentBlock = page/5;
-		int startPageNum = 1+(blockCount*currentBlock);
-		int lastPageNum = startPageNum+blockCount-1;
-		
-		if(paging.getTotalCount() < lastPageNum) {
-			lastPageNum = paging.getTotalPage();
-		}
-		
-		paging.setBlockCount(blockCount);
-		paging.setCurrentBlock(currentBlock);
-		paging.setStartPageNum(startPageNum);
-		paging.setLastPageNum(lastPageNum);
+		paging.makeBlockInfo();
 		
 		model.addAttribute("boardsList", boardsList);
 		model.addAttribute("paging",paging);
@@ -81,9 +96,8 @@ public class BoardsController {
 	}
 	
 	@GetMapping("/boards/{id}")
-	public String getBoardList(@PathVariable Integer id,Model model) {
-		DetailDto detail =boardsDao.findById(id);
-		model.addAttribute("detail",detail);
+	public String getBoardDetail(@PathVariable Integer id, Model model) {
+		model.addAttribute("boards", boardsDao.findById(id));
 		return "boards/detail";
 	}
 	

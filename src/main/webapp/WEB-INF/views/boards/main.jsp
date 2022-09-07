@@ -21,13 +21,7 @@
 			</c:forEach>
 		</tbody>
 	</table>
-	<div style="background-color: 'grey';">
-		<h3>totalCount:${paging.totalCount }</h3>
-		<h3>totalPage:${paging.totalPage }</h3>
-		<h3>currentPage:${paging.currentPage }</h3>
-		<h3>isLast:${paging.last }</h3>
-		<h3>isFirst:${paging.first }</h3>
-	</div>
+
 	
 <!-- 
 	<ul class="pagination">
@@ -59,6 +53,7 @@
 	</ul>
 	
  -->	
+ <div class="d-flex justify-content-center">
 		<ul class="pagination">
 				<li class='page-item ${paging.first ? "disabled" : "" }'><a class="page-link" href="?page=${paging.currentPage-1 }">Prev</a></li>
 				<c:forEach var="num" begin="${paging.startPageNum }" end="${paging.lastPageNum}" step="1">
@@ -66,7 +61,7 @@
 				</c:forEach>
 				<li class='page-item ${paging.last ? "disabled" : "" }'><a class="page-link" href="?page=${paging.currentPage+1 }">Next</a></li>
 		</ul>
-
+</div>
 		
 </div>
 

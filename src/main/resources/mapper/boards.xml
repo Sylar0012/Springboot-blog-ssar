@@ -12,15 +12,23 @@
 	</insert>
 
 	<select id="findById"
-		resultType="site.metacoding.red.web.dto.request.boards.DetailDto">
-		SELECT id, title, content FROM boards WHERE id = #{id}
+		resultType="site.metacoding.red.domain.boards.Boards">
+		SELECT id, title, content, usersId FROM boards WHERE id=#{id}
 	</select>
 
 	<select id="findAll"
 		resultType="site.metacoding.red.web.dto.response.boards.MainDto">
-		SELECT * FROM boards ORDER BY id DESC
-		OFFSET #{startNum}
-		ROWS FETCH NEXT 3 ROWS ONLY
+
+		SELECT b.id, b.title, u.username
+		FROM boards b
+		INNER JOIN
+		users u
+		ON
+		b.usersId = u.id
+		ORDER BY b.id DESC
+		OFFSET #{startNum} ROWS
+		FETCH NEXT 3
+		ROWS ONLY
 	</select>
 
 	<update id="update">
@@ -28,18 +36,20 @@
 	</update>
 
 	<delete id="delete">
-
+		DELETE FROM boards WHERE id = #{id}
 	</delete>
 
-	<select id="paging" resultType="site.metacoding.red.web.dto.response.boards.PagingDto">
+	<select id="paging"
+		resultType="site.metacoding.red.web.dto.response.boards.PagingDto">
 		SELECT totalCount,
 		totalPage,
 		currentPage,
 		decode(currentPage, 0, 1, 0) first,
-		decode(currentPage, totalPage-1, 1, 0) last
+		decode(currentPage, totalPage-1, 1,0) last
 		FROM
 		(
-		select count(*) totalCount, ceil(count(*)/3) totalPage, #{page} currentPage, 0
+		select count(*) totalCount, ceil(count(*)/3) totalPage,
+		#{page} currentPage, 0
 		first, 0 last
 		FROM boards
 		)
