@@ -4,13 +4,12 @@
 
 <div class="container">
 	<br /> <br />
-	<h1>id : ${principal.id}</h1>
-	<h1>usersId : ${boards.usersId}</h1>
+
 	<c:if test="${principal.id == boards.usersId }">
 		<div class="d-flex">
-			<form>
-				<button class="btn btn-warning">수정하러가기</button>
-			</form>
+
+				<button class="btn btn-warning"><a href="/boards/${boards.id}/updateForm">수정하기</a></button>
+
 			<form method="post" action="/boards/${boards.id}/delete">
 				<button class="btn btn-danger">삭제</button>
 			</form>
