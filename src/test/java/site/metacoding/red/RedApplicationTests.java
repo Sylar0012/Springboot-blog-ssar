@@ -8,6 +8,8 @@ class RedApplicationTests {
 
 	@Test
 	void contextLoads() {
+		String a =null;
+		System.out.println(a);
 	}
 
 }

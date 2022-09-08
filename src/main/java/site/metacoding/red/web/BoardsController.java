@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,10 +48,8 @@ public class BoardsController {
 		if (principal.getId() != boardsPs.getUsersId()) {
 			return "errors/badPage";
 		}
-		
 		// 2. 변경
 		boardsPs.글수정(updateDto);
-		
 		// 3.수행
 		boardsDao.update(boardsPs);
 
@@ -119,23 +118,38 @@ public class BoardsController {
 		return "redirect:/";
 	}
 
-	// http://localhost:8000/?page = 1
+	// http://localhost:8000/?page=0&keyword=스프링
 	@GetMapping({ "/", "/boards" })
-	public String getBoardList(Model model, Integer page) {
-		if (page == null)
+	public String getBoardList(Model model, @Param("page") Integer page, @Param("keyword")String keyword) {
+		
+		if (page == null) {
 			page = 0;
-
+		}
 		int startNum = page * 3;
+		
+		// keyword에 값이 없는경우
+		if(keyword == null || keyword.isEmpty()) {
+			List<MainDto> boardsList = boardsDao.findAll(startNum);
+			
+			PagingDto paging = boardsDao.paging(page, null);
+			paging.setKeyword(keyword);
+			paging.makeBlockInfo();
 
-		List<MainDto> boardsList = boardsDao.findAll(startNum);
-		// paging.set머시기로 dto완성
-		PagingDto paging = boardsDao.paging(page);
+			model.addAttribute("boardsList", boardsList);
+			model.addAttribute("paging", paging);
+		// keyword에 값이 있는경우	
+		} else {
+			List<MainDto> boardsList = boardsDao.findSearch(startNum, keyword);
+			PagingDto paging = boardsDao.paging(page, keyword);
+			paging.setKeyword(keyword);
+			paging.makeBlockInfo();
 
-		paging.makeBlockInfo();
-
-		model.addAttribute("boardsList", boardsList);
-		model.addAttribute("paging", paging);
+			model.addAttribute("boardsList", boardsList);
+			model.addAttribute("paging", paging);
+		}
+		
 		return "boards/main";
+		
 	}
 
 	@GetMapping("/boards/{id}")

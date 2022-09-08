@@ -3,6 +3,16 @@
 <%@ include file="../layout/header.jsp"%>
 
 <div class="container">
+	<br />
+	<div class="d-flex justify-content-end">
+		<div style="width: 300px;">
+			<form class="d-flex" method="get" action="/">
+				<input class="form-control me-2" type="text" placeholder="Search" name="keyword">
+				<button class="btn btn-primary" type="submit">Search</button>
+			</form>
+		</div>
+	</div>
+	<br />
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -22,8 +32,8 @@
 		</tbody>
 	</table>
 
-	
-<!-- 
+
+	<!-- 
 	<ul class="pagination">
 		<c:choose>
 			<c:when test="${paging.first}">
@@ -52,17 +62,20 @@
 		</c:choose>
 	</ul>
 	
- -->	
- <div class="d-flex justify-content-center">
+ -->
+
+	<div class="d-flex justify-content-center">
 		<ul class="pagination">
-				<li class='page-item ${paging.first ? "disabled" : "" }'><a class="page-link" href="?page=${paging.currentPage-1 }">Prev</a></li>
-				<c:forEach var="num" begin="${paging.startPageNum }" end="${paging.lastPageNum}" step="1">
-					<a class="page-link" href='?page=${num-1}'>${num}</a>
-				</c:forEach>
-				<li class='page-item ${paging.last ? "disabled" : "" }'><a class="page-link" href="?page=${paging.currentPage+1 }">Next</a></li>
+			<li class='page-item ${paging.first ? "disabled" : "" }'><a class="page-link"
+				href="?page=${paging.currentPage-1 }">Prev</a></li>
+			<c:forEach var="num" begin="${paging.startPageNum }" end="${paging.lastPageNum}" step="1">
+				<a class="page-link" href='?page=${num-1}&keyword=${paging.keyword}'>${num}</a>
+			</c:forEach>
+			<li class='page-item ${paging.last ? "disabled" : "" }'><a class="page-link"
+				href="?page=${paging.currentPage+1 }">Next</a></li>
 		</ul>
-</div>
-		
+	</div>
+
 </div>
 
 <%@ include file="../layout/footer.jsp"%>

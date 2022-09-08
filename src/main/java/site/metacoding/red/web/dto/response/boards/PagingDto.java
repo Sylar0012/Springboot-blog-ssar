@@ -1,6 +1,8 @@
 package site.metacoding.red.web.dto.response.boards;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
@@ -16,13 +18,15 @@ public class PagingDto {
 	private Integer lastPageNum;           // 5 -> 10 -> 15
 	private Integer blockCount;      // 한페이지에 페이지 넘 갯수(5) 1 ~ 5, 6 ~ 10
 	private Integer currentBlock;              // 변수
+	private String keyword;
+
 	
 	// ?page=0 기준 blockPage = 1, startPageNum = 1, lastPageNum = 5, blockPageCount = 1, 2, 3, 4, 5 (5개)
 	// ?page=5 기준 blockPage = 2, startPageNum = 6, lastPageNum = 10, blockPageCount = 6, 7, 8, 9, 10 (5개)
 
 	public void makeBlockInfo() {
 		this.blockCount =5;
-		
+
 		this.currentBlock = currentPage/ blockCount;
 		this.startPageNum = 1+(blockCount*currentBlock);
 		this.lastPageNum = startPageNum+blockCount-1;
