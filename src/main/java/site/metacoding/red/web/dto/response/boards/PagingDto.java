@@ -26,7 +26,19 @@ public class PagingDto {
 
 	public void makeBlockInfo() {
 		this.blockCount =5;
-
+		this.keyword = null;
+		this.currentBlock = currentPage/ blockCount;
+		this.startPageNum = 1+(blockCount*currentBlock);
+		this.lastPageNum = startPageNum+blockCount-1;
+		
+		if(totalPage < lastPageNum) {
+			this.lastPageNum = totalPage;
+		}
+	}
+	
+	public void makeBlockInfo(String keyword) {
+		this.blockCount =5;
+		this.keyword = keyword;
 		this.currentBlock = currentPage/ blockCount;
 		this.startPageNum = 1+(blockCount*currentBlock);
 		this.lastPageNum = startPageNum+blockCount-1;

@@ -132,7 +132,6 @@ public class BoardsController {
 			List<MainDto> boardsList = boardsDao.findAll(startNum);
 			
 			PagingDto paging = boardsDao.paging(page, null);
-			paging.setKeyword(keyword);
 			paging.makeBlockInfo();
 
 			model.addAttribute("boardsList", boardsList);
@@ -141,8 +140,7 @@ public class BoardsController {
 		} else {
 			List<MainDto> boardsList = boardsDao.findSearch(startNum, keyword);
 			PagingDto paging = boardsDao.paging(page, keyword);
-			paging.setKeyword(keyword);
-			paging.makeBlockInfo();
+			paging.makeBlockInfo(keyword);
 
 			model.addAttribute("boardsList", boardsList);
 			model.addAttribute("paging", paging);
