@@ -75,7 +75,8 @@ public class UsersController {
 			return"errors/badPage";
 		}
 		 
-		usersDao.delete(id);		
+		usersDao.delete(id);
+		session.invalidate();
 		return"redirect:/";
 	}
 	
