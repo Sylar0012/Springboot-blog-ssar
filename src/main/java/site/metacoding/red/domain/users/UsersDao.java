@@ -5,6 +5,7 @@ import java.util.List;
 import site.metacoding.red.web.dto.request.users.JoinDto;
 import site.metacoding.red.web.dto.request.users.LoginDto;
 
+
 public interface UsersDao {
 	public Users login(LoginDto loginDto);
 	public void insert(JoinDto joinDto); // DTO 생각해보기

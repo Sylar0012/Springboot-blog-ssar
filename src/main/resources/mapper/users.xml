@@ -3,30 +3,38 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="site.metacoding.red.domain.users.UsersDao">
-	
-	<select id="login" resultType="site.metacoding.red.domain.users.Users">
-		SELECT * FROM users WHERE username=#{username} AND password=#{password}
+
+	<select id="login"
+		resultType="site.metacoding.red.domain.users.Users">
+		SELECT * FROM users WHERE username=#{username} AND
+		password=#{password}
 	</select>
-	
+
 	<insert id="insert">
-		INSERT INTO users(id, username, password, email, createdAt) 
+		INSERT INTO users(id, username, password, email,
+		createdAt)
 		VALUES(users_seq.nextval, #{username}, #{password}, #{email}, sysdate)
 	</insert>
 
-	<select id="findById" resultType="site.metacoding.red.domain.users.Users">
+	<select id="findById"
+		resultType="site.metacoding.red.domain.users.Users">
 		SELECT * FROM users WHERE id = #{id}
 	</select>
-	
-	<select id="findAll" resultType="site.metacoding.red.domain.users.Users">
-		
+
+	<select id="findAll"
+		resultType="site.metacoding.red.domain.users.Users">
+
 	</select>
-	
+
 	<update id="update">
-	
+		UPDATE users SET password = #{password}, email =#{email} WHERE id = #{id}
 	</update>
-	
+
 	<delete id="delete">
-	
+		BEGIN
+			UPDATE (SELECT u.id, b.usersId FROM boards b INNER JOIN users u ON b.usersId = u.id WHERE u.id = #{id}) SET usersId =41 WHERE id =#{id};
+			DELETE FROM users WHERE id = #{id};
+		END;
 	</delete>
 
 </mapper>

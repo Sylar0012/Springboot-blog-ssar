@@ -6,14 +6,16 @@
 <div class="container">
 	<form action="/join" method="post">
 		<div class="mb-3 mt-3">
-			<input type="text" class="form-control" placeholder="Enter username" name="username">
+			<input type="text" class="form-control" placeholder="Enter username"
+				name="username">
 		</div>
 		<div class="mb-3">
 			<input type="password" class="form-control"
 				placeholder="Enter password" name="password">
 		</div>
 		<div class="mb-3">
-			<input type="email" class="form-control" placeholder="Enter email" name="email">
+			<input type="email" class="form-control" placeholder="Enter email"
+				name="email">
 		</div>
 		<button type="submit" class="btn btn-primary">회원가입</button>
 	</form>

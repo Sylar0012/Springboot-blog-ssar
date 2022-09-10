@@ -4,7 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,7 @@ import site.metacoding.red.domain.users.Users;
 import site.metacoding.red.domain.users.UsersDao;
 import site.metacoding.red.web.dto.request.users.JoinDto;
 import site.metacoding.red.web.dto.request.users.LoginDto;
+import site.metacoding.red.web.dto.request.users.UpdateDto;
 
 @RequiredArgsConstructor
 @Controller
@@ -54,4 +57,71 @@ public class UsersController {
 	public String joinForm() {
 		return "users/joinForm";
 	}
+	
+	@PostMapping("/users/{id}/delete")
+	public String delete(@PathVariable Integer id) {
+		Users principal = (Users) session.getAttribute("principal");
+		Users usersPs = usersDao.findById(id);
+		
+		if(usersPs == null) {
+			return"errors/badPage";
+		}
+		
+		if(principal == null) {
+			return "redirect:/loginForm";
+		} 
+		
+		if(principal.getId() != usersPs.getId()) {
+			return"errors/badPage";
+		}
+		 
+		usersDao.delete(id);		
+		return"redirect:/";
+	}
+	
+	@GetMapping("/users/{id}/updateForm")
+	public String updateBoards(@PathVariable Integer id, Model model) {
+		Users principal =(Users) session.getAttribute("principal");
+		Users usersPs = usersDao.findById(id);
+		
+		if(usersPs == null) {
+			return"error/badPage";
+		}
+		
+		if(principal == null) {
+			return"error/badPage";
+		}
+		
+		if(principal.getId() != usersPs.getId()) {
+			return"error/badPage";
+		}
+		
+		model.addAttribute("users", usersPs);
+		return"users/updateForm";
+	}
+
+	@PostMapping("/users/{id}/update")
+	public String update(@PathVariable Integer id, UpdateDto updateDto) {
+		Users principal =(Users) session.getAttribute("principal");
+		Users usersPs = usersDao.findById(id);
+		
+		if(usersPs == null) {
+			return"error/badPage";
+		}
+		
+		if(principal == null) {
+			return"error/badPage";
+		}
+		
+		if(principal.getId() != usersPs.getId()) {
+			return"error/badPage";
+		}
+		
+		usersPs.회원수정(updateDto);
+		
+		usersDao.update(usersPs);
+		
+		return"redirect:/";
+	}
+
 }

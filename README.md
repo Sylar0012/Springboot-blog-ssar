@@ -28,3 +28,9 @@ insert into users(id, username, password, email, createdAt) values(users_seq.nex
 insert into users(id, username, password, email, createdAt) values(users_seq.nextval, 'hong', '1234', 'hong@nate.com', sysdate);
 commit;
 ```
+
+### 회원탈퇴
+```
+임시로 익명의 유저를 만든 후에 쿼리 수정해야함.
+
+```
